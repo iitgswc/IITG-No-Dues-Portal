@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ warden.name }}|Warden|Home Page
+{% endblock %}
+
+{% block name %}
+    {{ warden.name }}
+{% endblock %}
+
+{% block heading %}
+    Students of {{ warden.hostel }}
+{% endblock %}
+
+{% block Status %}"warden_approval"{% endblock %}
+{% block Remarks%}"warden_remarks"{% endblock %}
+{%block Last_Updated%}{{ stud.warden_update_time }}{% endblock %}
+
+
+{% block status_name %}"warden_approval"{% endblock %}
+{% block remarks_name %}"warden_remarks"{% endblock %}
+
+{% block studentlistpending %}
+{% for stud in students %}
+    {% if stud.warden_approval is False %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+                <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.warden_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.warden_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block studentlistapproved %}
+{% for stud in students %}
+    {% if stud.warden_approval is True %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" checked id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+               <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.warden_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.warden_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}

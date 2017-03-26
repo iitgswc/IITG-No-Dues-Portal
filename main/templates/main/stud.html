@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Student Homepage</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .ScrollStyle {
+            max-height: 130px;
+            overflow-y: scroll;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 10px;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h4>Welcome {{ student.name }}!</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active" ><a href="{% url 'main:stud_profile' %}">Overall status</a></li>
+                <li><a href="{% url 'main:no_dues_apply' %}"> Dues Clear Application</a></li>
+                <li><a href="{% url 'main:stud_full_dept' %}">Professors detailed status</a></li>
+                <li><a href="{% url 'main:stud_full_lab' %}"> Lab detailed status</a></li>
+                <li><a href="{% url 'main:rules' %}">Instructions</a></li>
+                <li><a href="{% url 'main:contact' %}">Contact</a></li>
+                <li><a href="{% url 'main:logout_user' %}">Log out</a></li>
+            </ul>
+            <br>
+        </div>
+        <br>
+
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="well">
+                        <h4>Details</h4>
+                        <p>
+                        <ul>
+                            <li><b>Name
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp</b>{{ student.name }}
+                            </li>
+                            <li><b>Webmail &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp</b>{{ student.webmail }}</li>
+                            <li><b>Department&nbsp:&nbsp&nbsp</b>{{ student.department }}</li>
+                            <li><b>Hostel
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp</b>{{ student.hostel }}
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="approvals" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Approval</th>
+                            <th>No Dues Status</th>
+                            <th>Remarks</th>
+                            <th>Last Updated</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Caretaker</td>
+                            <td>
+                                {% if student.caretaker_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.caretaker_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.caretaker_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.caretaker_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>Warden</td>
+                            <td>
+                                {% if student.warden_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.warden_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.warden_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ student.warden_update_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gymkhana</td>
+                            <td>
+                                {% if student.gymkhana_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}</td>
+                            <td>
+                                {% if not student.gymkhana_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.gymkhana_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ student.gymkhana_update_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Assistant Registrar</td>
+                            <td>
+                                {% if student.assistant_registrar_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.assistant_registrar_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.assistant_registrar_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.assistant_registrar_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>Thesis Submission</td>
+                            <td>
+                                {% if student.submit_thesis is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.submit_thesis_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.submit_thesis_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.submit_thesis_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>Library</td>
+                            <td>
+                                {% if student.library_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.library_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.library_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.library_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>Online no-dues CC</td>
+                            <td>
+                                {% if student.online_cc_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.online_cc_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.online_cc_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.online_cc_update_time }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>CC Incharge</td>
+                            <td>
+                                {% if student.CC_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.cc_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.cc_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.CC_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>All professors</td>
+                            <td>
+                                {% if student.dept_status is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                ----
+                            </td>
+                            <td>----</td>
+                        </tr>
+                        <tr>
+                            <td>All Labs/Workshops</td>
+                            <td>
+                                {% if student.lab_status is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                ----
+                            </td>
+                            <td>----</td>
+                        </tr>
+                        <tr>
+                            <td>HOD</td>
+                            <td>
+                                {% if student.HOD_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.hod_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.hod_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.HOD_update_time }}</td>
+                        </tr>
+                        <tr>
+                            <td>Account</td>
+                            <td>
+                                {% if student.account_approval is True %}
+                                    <span style="color: #11B54A">Approved</span>
+                                {% else %}
+                                    <span style="color:#e92916">Not Approved</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not student.account_remarks %}
+                                    ----
+                                {% else %}
+                                    {{ student.account_remarks }}
+                                {% endif %}
+                            </td>
+                            <td>{{ student.account_update_time }}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<footer class="container-fluid text-center">
+    <p>&copy; 2017 IIT Guwahati</p>
+    <p style="font-size:1.0em; text-align:center">Developed By : &nbsp&nbsp <a
+            href="https://www.facebook.com/meet.555.patoliya" style="color:#169FD8;text-decoration:none;">Meet
+        Patoliya</a></p>
+</footer>
+</footer>
+</body>
+</html>
+

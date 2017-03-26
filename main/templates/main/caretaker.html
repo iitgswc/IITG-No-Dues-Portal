@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ caretaker.name }}|Caretaker|Home Page
+{% endblock %}
+
+{% block name %}
+    {{ caretaker.name }}
+{% endblock %}
+
+{% block heading %}
+    Students of {{ caretaker.hostel }}
+{% endblock %}
+
+{% block status_name %}"caretaker_approval"{% endblock %}
+{% block remarks_name %}"caretaker_remarks"{% endblock %}
+{% block studentlistpending %}
+{% for stud in students %}
+    {% if stud.caretaker_approval is False %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+                <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.caretaker_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.caretaker_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block studentlistapproved %}
+{% for stud in students %}
+    {% if stud.caretaker_approval is True %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" checked id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+               <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.caretaker_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.caretaker_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}

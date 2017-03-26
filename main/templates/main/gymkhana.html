@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ gymkhana.name }}|Home Page
+{% endblock %}
+
+{% block name %}
+    {{ gymkhana.name }}
+{% endblock %}
+
+{% block heading %}
+    Students
+{% endblock %}
+
+{% block status_name %}"gymkhana_approval"{% endblock %}
+{% block remarks_name %}"gymkhana_remarks"{% endblock %}
+
+{% block studentlistpending %}
+{% for stud in students %}
+    {% if stud.gymkhana_approval is False %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+                <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.gymkhana_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.gymkhana_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block studentlistapproved %}
+{% for stud in students %}
+    {% if stud.gymkhana_approval is True %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" checked id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+               <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.gymkhana_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.gymkhana_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}

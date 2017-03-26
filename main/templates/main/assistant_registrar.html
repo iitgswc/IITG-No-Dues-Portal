@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ assistant_registrar.name }}|Assistant Registrar|Home Page
+{% endblock %}
+
+{% block name %}
+    {{ assistant_registrar.name }}
+{% endblock %}
+
+{% block heading %}
+    Students
+{% endblock %}
+
+{% block Status %}{{ stud.assistant_registrar_approval }}{% endblock %}
+{% block Remarks%}{{ stud.assistant_registrar_remarks }}{% endblock %}
+{%block Last_Updated%}{{ stud.assistant_registrar_update_time }}{% endblock %}
+ {% block checkbox_init %}
+     {% if stud.assistant_registrar_approval is True %}
+         checked
+     {% endif %}
+ {% endblock %}
+{% block status_name %}"assistant_registrar_approval"{% endblock %}
+{% block remarks_name %}"assistant_registrar_remarks"{% endblock %}
+
+{% block studentlistpending %}
+{% for stud in students %}
+    {% if stud.assistant_registrar_approval is False %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+                <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.assistant_registrar_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.assistant_registrar_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block studentlistapproved %}
+{% for stud in students %}
+    {% if stud.assistant_registrar_approval is True %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" checked id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+               <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.assistant_registrar_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.assistant_registrar_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}

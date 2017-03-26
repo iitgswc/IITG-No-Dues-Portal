@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ hod.name }}|HOD|Home Page
+{% endblock %}
+
+{% block name %}
+    {{ hod.name }}
+{% endblock %}
+
+{% block heading %}
+    Students of {{ hod.department }}
+{% endblock %}
+
+{% block status_name %}"HOD_approval"{% endblock %}
+{% block remarks_name %}"hod_remarks"{% endblock %}
+
+{% block studentlistpending %}
+{% for stud in students %}
+    {% if stud.HOD_approval is False %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+                <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.hod_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.HOD_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block studentlistapproved %}
+{% for stud in students %}
+    {% if stud.HOD_approval is True %}
+        <tr>
+            <td>{{ stud.roll_no }}</td>
+            <td>{{ stud.name }}</td>
+            <td>{{ stud.webmail }}</td>
+            <td>{{ stud.department }}</td>
+            <td><input type="checkbox" onclick="update_status(this.id)" checked id="{{ stud.webmail }}"/></td>
+            <td style="padding:0px; height:100%">
+               <div style="height:100%" contenteditable id="{{ stud.roll_no }}" onkeyup="update_remarks(this.id)">{{ stud.hod_remarks }}</div>
+            </td>
+            <td><span id="{{ stud.webmail }}time">{{ stud.HOD_update_time }}</span></td>
+        </tr>
+    {% endif %}
+{% endfor %}
+{% endblock %}
