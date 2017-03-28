@@ -202,14 +202,14 @@ def login_user(request):
         username = request.POST['username']
         password = request.POST['password']
         role = request.POST['role']
-        print role
+        print (role)
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                #print 'stud1'
+                #print ('stud1')
                 login(request, user)
-                #print role+'1'
+                #print (role+'1')
                 role = str(role)
                 #print type(Student.webmail)
                 if role == "Student":
@@ -386,7 +386,7 @@ def no_dues_apply(request):
         # fix this
 
 def update_faculty_status(request):
-    print "updating lab status"
+    print ("updating lab status")
     stud_webmail = request.GET.get("stud_webmail")
     faculty_webmail = request.GET.get("faculty_webmail")
     student = Student.objects.get(webmail=stud_webmail)
@@ -408,7 +408,7 @@ def update_faculty_status(request):
 def update_faculty_remarks(request):
     remarks = request.GET.get("remarks")
     stud_roll_no = request.GET.get("stud_roll_no")
-    print stud_roll_no + "1111"
+    print (stud_roll_no + "1111")
     faculty_webmail = request.GET.get("faculty_webmail")
     student = Student.objects.get(roll_no=stud_roll_no)
     faculty = Faculty.objects.get(webmail=faculty_webmail)
@@ -421,7 +421,7 @@ def update_faculty_remarks(request):
          'webmail': student.webmail})
 
 def update_lab_status(request):
-    print "updating lab status"
+    print ("updating lab status")
     stud_webmail = request.GET.get("stud_webmail")
     lab_webmail = request.GET.get("lab_webmail")
     student = Student.objects.get(webmail=stud_webmail)
@@ -443,7 +443,7 @@ def update_lab_status(request):
 def update_lab_remarks(request):
     remarks = request.GET.get("remarks")
     stud_roll_no = request.GET.get("stud_roll_no")
-    print stud_roll_no + "1111"
+    print (stud_roll_no + "1111")
     lab_webmail = request.GET.get("lab_webmail")
     student = Student.objects.get(roll_no=stud_roll_no)
     lab = Lab.objects.get(webmail=lab_webmail)
@@ -458,19 +458,19 @@ def update_lab_remarks(request):
 def update_status(request):
     print ("reaching")
     status_name = request.GET.get("status_name") #getting name of the attribute
-    print status_name+"1234"
+    print (status_name+"1234")
     stud_webmail = request.GET.get("stud_webmail")
-    print stud_webmail + "5678"
+    print (stud_webmail + "5678")
     student = Student.objects.get(webmail=stud_webmail)
     status = getattr(student, status_name)
-    print type(status)
-    print status
+    print (type(status))
+    print (status)
     if status_name == 'caretaker_approval':
-        print "inside caretaker"
+        print ("inside caretaker")
         student.caretaker_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.warden_approval is True:
                 student.warden_approval = False
                 student.warden_update_time = datetime.now()
@@ -486,11 +486,11 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.caretaker_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'warden_approval':
-        print "inside warden"
+        print ("inside warden")
         student.warden_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.assistant_registrar_approval is True:
                 student.assistant_registrar_approval = False
                 student.assistant_registrar_update_time = datetime.now()
@@ -503,11 +503,11 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.warden_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'gymkhana_approval':
-        print "inside gymkhana"
+        print ("inside gymkhana")
         student.gymkhana_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.assistant_registrar_approval is True:
                 student.assistant_registrar_approval = False
                 student.assistant_registrar_update_time = datetime.now()
@@ -520,11 +520,11 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.gymkhana_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'assistant_registrar_approval':
-        print "inside assistant_registrar"
+        print ("inside assistant_registrar")
         student.assistant_registrar_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.HOD_approval is True:
                 student.HOD_approval = False
                 student.HOD_update_time = datetime.now()
@@ -534,11 +534,11 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.assistant_registrar_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'submit_thesis':
-        print " inside submit_thesis"
+        print (" inside submit_thesis")
         student.submit_thesis_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.library_approval is True:
                 student.library_approval = False
                 student.library_update_time = datetime.now()
@@ -551,7 +551,7 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.submit_thesis_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'library_approval':
-        print "inside library"
+        print ("inside library")
         student.library_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
@@ -565,11 +565,11 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.library_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'online_cc_approval':
-        print "inside online_cc_approval"
+        print ("inside online_cc_approval")
         student.online_cc_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.CC_approval is True:
                 student.CC_approval = False
                 student.CC_update_time = datetime.now()
@@ -582,7 +582,7 @@ def update_status(request):
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.online_cc_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'CC_approval':
-        print "inside CC_approval"
+        print ("inside CC_approval")
         student.CC_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
@@ -597,18 +597,18 @@ def update_status(request):
         return JsonResponse({'messege': "Status updated", 'datetime': student.CC_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
 
     elif status_name == 'HOD_approval':
-        print "inside HOD"
+        print ("inside HOD")
         student.HOD_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
-            print "in the status check"
+            print ("in the status check")
             if student.account_approval is True:
                 student.account_approval = False
                 student.account_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.HOD_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif status_name == 'account_approval':
-        print "inside account_approval"
+        print ("inside account_approval")
         student.CC_update_time = datetime.now()
         setattr(student, status_name, not status)
         if status is True:
@@ -623,74 +623,74 @@ def update_remarks(request):
     print ("remarks function reaching")
     remarks_name = request.GET.get("remarks_name")  # getting name of the attribute
     remarks = request.GET.get("remarks")
-    print remarks_name + "1234"
-    print remarks + "5678"
+    print (remarks_name + "1234")
+    print (remarks + "5678")
     stud_roll_no = request.GET.get("stud_roll_no")
-    print stud_roll_no + "1111"
+    print (stud_roll_no + "1111")
     student = Student.objects.get(roll_no=stud_roll_no)
     setattr(student, remarks_name, remarks)
     student.save()
     if remarks_name == 'caretaker_remarks':
-        print "inside caretaker remarks"
+        print ("inside caretaker remarks")
         student.caretaker_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.caretaker_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'warden_remarks':
-        print "inside warden remarks"
+        print ("inside warden remarks")
         student.warden_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.warden_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'gymkhana_remarks':
-        print "inside gymkhana remarks"
+        print ("inside gymkhana remarks")
         student.gymkhana_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.gymkhana_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'assistant_registrar_remarks':
-        print "inside assi_reg remarks"
+        print ("inside assi_reg remarks")
         student.assistant_registrar_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.assistant_registrar_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'library_remarks':
-        print "inside library remarks"
+        print ("inside library remarks")
         student.library_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.library_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'submit_thesis_remarks':
-        print "inside submit thesis remarks"
+        print ("inside submit thesis remarks")
         student.submit_thesis_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.submit_thesis_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'online_cc_remarks':
-        print "inside online cc remarks"
+        print ("inside online cc remarks")
         student.online_cc_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.online_cc_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'cc_remarks':
-        print "inside cc remarks"
+        print ("inside cc remarks")
         student.CC_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.CC_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'hod_remarks':
-        print "inside hod remarks"
+        print ("inside hod remarks")
         student.HOD_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.HOD_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
     elif remarks_name == 'account_remarks':
-        print "inside account remarks"
+        print ("inside account remarks")
         student.account_update_time = datetime.now()
         student.save()
         return JsonResponse({'messege': "Status updated", 'datetime': student.account_update_time.strftime('%B %d, %Y, %I:%M %p'), 'webmail':student.webmail})
 
 def search_students(request):
     searchquery = request.POST.get("searchquery")
-    print searchquery
+    print (searchquery)
     students = Student.objects.filter(Q(roll_no__icontains=searchquery)|Q(name__icontains=searchquery)|Q(webmail__icontains=searchquery))
     student_details = {}
     for student in students:
-        print student.webmail
-        print student.name
+        print (student.webmail)
+        print (student.name)
         student_details[student.webmail]=student.name
-    print student_details
+    print (student_details)
     return JsonResponse({'students_searched':student_details})
 
 def add_student(request):
@@ -699,7 +699,7 @@ def add_student(request):
     print (student_webmail+'7777')
     student = Student.objects.get(webmail=student_webmail)
     faculty = Faculty.objects.get(webmail=username)
-    print type(student)
+    print (type(student))
     print (student.webmail+'9999')
     #print type(Stud_Faculty_Status.objects.get(student=student, faculty=fac))
     #print  type(Stud_Faculty_Status(student=student, faculty=fac))
@@ -721,18 +721,29 @@ def delete_student(request):
     student = Student.objects.get(webmail=stud_webmail)
     faculty = Faculty.objects.get(webmail=faculty_webmail)
     Stud_Faculty_Status.objects.get(student=student, faculty=faculty).delete()
+    if not Stud_Faculty_Status.objects.filter(student=student).exists():
+        print ("inside faculty")
+        student.dept_process_trigger = False
+        if student.HOD_approval is True:
+            student.HOD_approval = False
+            student.HOD_update_time = datetime.now()
+        if student.account_approval is True:
+            student.account_approval = False
+            student.account_update_time = datetime.now()
+        student.save()
+        print ("student updated")
     return JsonResponse({'messege': 'Student is deleted', 'webmail': stud_webmail})
 
 def search_faculties(request):
     searchquery = request.POST.get("searchquery")
-    print searchquery
+    print (searchquery)
     faculties = Faculty.objects.filter(Q(name__icontains=searchquery)|Q(webmail__icontains=searchquery))
     faculty_details = {}
     for faculty in faculties:
-        print faculty.webmail
-        print faculty.name
+        print (faculty.webmail)
+        print (faculty.name)
         faculty_details[faculty.webmail]=faculty.name
-    print  faculty_details
+    print  (faculty_details)
     return JsonResponse({'faculties_searched':faculty_details})
 
 def add_faculty(request):
@@ -741,7 +752,7 @@ def add_faculty(request):
     print (faculty_webmail+'7777')
     student = Student.objects.get(webmail=username)
     fac = Faculty.objects.get(webmail=faculty_webmail)
-    print type(fac)
+    print (type(fac))
     print (fac.webmail+'9999')
     #print type(Stud_Faculty_Status.objects.get(student=student, faculty=fac))
     #print  type(Stud_Faculty_Status(student=student, faculty=fac))
@@ -879,7 +890,7 @@ def cc_profile(request):
         username = request.user.username
         cc = CC.objects.get(webmail=username)
         students = Student.objects.filter(online_cc_approval=True)
-        print students
+        print (students)
         return render(request, 'main/cc.html',
                       {'error_message': 'valid login', 'students': students, 'cc': cc})
 
